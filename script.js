@@ -1,6 +1,6 @@
 console.log("Welcome to Spotify");
 //variable Initialization
-let songIndex=0;
+let songIndex=1;
 let currentSongIndex;
 let audioElement=new Audio('songs/1.mp3');
 let masterPlay=document.getElementById('masterplay');
@@ -62,6 +62,7 @@ myProgressBar.addEventListener('change',()=>{
 })
 
 
+//Make all the small play icons change to pause and vice versa
 
 const makeAllPlays=()=>{
     Array.from(document.getElementsByClassName('songItemPlay')).forEach((element)=>{
@@ -71,15 +72,42 @@ const makeAllPlays=()=>{
     })
 }
 
+
+//Playing Songs from the list function
 const playNewAudio = () => {
-    masterSongName.innerText=songs[songIndex].songName;
-    audioElement.src=`songs/${songIndex+1}.mp3`;
+    masterSongName.innerText=songs[songIndex].songName;//Default Song name after page reload
+    audioElement.src=`songs/${songIndex}.mp3`;
     currentSongIndex = songIndex;
     audioElement.play();
     gif.style.opacity=1;
     masterPlay.classList.remove('fa-play-circle');
     masterPlay.classList.add('fa-pause-circle');
 }
+
+const pauseNewAudio = () => {
+    masterSongName.innerText=songs[songIndex].songName;//Default Song name after page reload
+    audioElement.src=`songs/${songIndex}.mp3`;
+    currentSongIndex = songIndex;
+    audioElement.pause();
+    gif.style.opacity=0;
+    masterPlay.classList.remove('fa-pause-circle');
+    masterPlay.classList.add('fa-play-circle');
+}
+Array.from(document.getElementsByClassName('songItemPlay')).forEach((element)=>{
+    element.addEventListener('click',(e)=>{
+        if(audioElement.paused || audioElement.currentTime<=0){//Paused or Never played in current Session
+            e.target.classList.remove('fa-play-circle');
+            e.target.classList.add('fa-pause-circle');
+        }
+        else if(audioElement.paused && audioElement.currentTime>0){
+            audioElement.src=`songs/${songIndex}.mp3`;
+            audioElement.play()
+
+
+        }
+    
+
+
 
 
 
@@ -88,8 +116,6 @@ Array.from(document.getElementsByClassName('songItemPlay')).forEach((element)=>{
         if(audioElement.paused || audioElement.currentTime<=0){
             e.target.classList.remove('fa-play-circle');
             e.target.classList.add('fa-pause-circle');
-            masterPlay.classList.remove('fa-play-circle');
-            masterPlay.classList.add('fa-pause-circle');
             if (audioElement.paused && audioElement.currentTime > 0) {
                 audioElement.play()
             } else {
@@ -115,6 +141,9 @@ Array.from(document.getElementsByClassName('songItemPlay')).forEach((element)=>{
         }
     })
 })
+
+
+
 document.getElementById('next').addEventListener('click',()=>{
     if(songIndex>=8){
         songIndex=8;
