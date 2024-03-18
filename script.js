@@ -23,14 +23,14 @@ let songs=[
 
 ]
 
-
+//Adding the Song Icon and Name in each SongItem Div
 songitems.forEach((element,i)=>{
     element.getElementsByTagName('img')[0].src=songs[i].coverPath;
     element.getElementsByClassName('songname')[0].innerText=songs[i].songName;
     
 })
 
-// audioElement.play()
+
 //handle play box click
 masterPlay.addEventListener('click',()=>{
     if(audioElement.paused || audioElement.currentTime<=0){
@@ -38,6 +38,7 @@ masterPlay.addEventListener('click',()=>{
         masterPlay.classList.remove('fa-play-circle');
         masterPlay.classList.add('fa-pause-circle');
         gif.style.opacity=1;
+    
 
     }
     else{
@@ -48,16 +49,20 @@ masterPlay.addEventListener('click',()=>{
 
     }
 })
-//Listen to events
+
+//Updating the ProgressBar
+//Updating the Seek Bar(When Song Approaches automatically)
 audioElement.addEventListener('timeupdate',()=>{
-    //update seek bar
     progress=parseInt((audioElement.currentTime/audioElement.duration)*100);
     myProgressBar.value=progress;
 })
-
+//Updating the Seek Bar(When Song is Skipped)
 myProgressBar.addEventListener('change',()=>{
     audioElement.currentTime=((myProgressBar.value*audioElement.duration)/100);
 })
+
+
+
 const makeAllPlays=()=>{
     Array.from(document.getElementsByClassName('songItemPlay')).forEach((element)=>{
          element.classList.remove('fa-pause-circle');
@@ -83,6 +88,8 @@ Array.from(document.getElementsByClassName('songItemPlay')).forEach((element)=>{
         if(audioElement.paused || audioElement.currentTime<=0){
             e.target.classList.remove('fa-play-circle');
             e.target.classList.add('fa-pause-circle');
+            masterPlay.classList.remove('fa-play-circle');
+            masterPlay.classList.add('fa-pause-circle');
             if (audioElement.paused && audioElement.currentTime > 0) {
                 audioElement.play()
             } else {
