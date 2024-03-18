@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu&family=Varela+Round&display=swap');
 
 body {
-    background-color: rgb(125, 122, 118);
+    background-color: rgb(14, 14, 14);
 
 }
 
@@ -54,7 +54,7 @@ nav ul li {
     font-family: "Varela Round",sans-serif;
     display: flex;
     margin: 23px auto;
-    width: 70%;
+    width: 80%;
     border-radius: 12px;
     padding: 34px;
     background-image:url('bg.jpg') ;
@@ -74,11 +74,23 @@ nav ul li {
     color: white;
     flex-direction: column;
     align-items: center;
+    border-top-left-radius: 24px;
+    border-top-right-radius:24px ;
+    border: 2px solid rgb(216, 204, 182);
 }
 
 #myProgressBar {
     width: 80vw;
     cursor: pointer;
+    accent-color: rgb(38, 232, 38);
+    margin-right: 15px;
+    width: 500px;
+    height: 7px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    background-image: linear-gradient(#ff4500, #ff4500);
+    background-size: 70% 100%;
+    background-repeat: no-repeat;
 }
 .icons{
     margin-top:18px ;
@@ -89,12 +101,13 @@ nav ul li {
 .songItem {
     height: 50px;
     display: flex;
-    background-color:rgb(216, 204, 182);
+    background-color:rgb(119, 210, 77);
     color: black;
     margin: 12px 0px;
     justify-content: space-between;
     align-items: center;
     border-radius: 14px;
+    width: 100%;
 
 
 
@@ -121,6 +134,7 @@ nav ul li {
 }
 .songitemcontainer{
     margin-top:34px ;
+    width: 800px;
 }
 .songinfo{
     position: absolute;
@@ -132,3 +146,31 @@ nav ul li {
     opacity: 0;
     transition: opacity 0.4s ease-in;
 }
+.bottom input[type="range"]::-webkit-slider-thumb {
+    /* For Chrome, Safari, and Opera */
+    background-color: #333; /* Default thumb color */
+}
+
+.bottom input[type="range"]::-moz-range-thumb {
+    /* For Firefox */
+    background-color: #333; /* Default thumb color */
+}
+
+.bottom input[type="range"]::-ms-thumb {
+    /* For IE */
+    background-color: #333; /* Default thumb color */
+}
+
+.songlist{
+    padding-left: 230px;
+}
+.songlist h1{
+    padding-left: 250px;
+}
+.miniplay:hover{
+    border: green;
+}
+.songItem:hover{
+    background-color: rgb(143, 209, 138);
+}
+

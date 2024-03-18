@@ -1,6 +1,6 @@
 console.log("Welcome to Spotify");
 //variable Initialization
-let songIndex=1;
+let songIndex=0;
 let currentSongIndex;
 let audioElement=new Audio('songs/1.mp3');
 let masterPlay=document.getElementById('masterplay');
@@ -17,36 +17,35 @@ let songs=[
     {songName:"Coming back to Life-Pink Floyd",filePath:"songs/5.mp3",coverPath:"covers/5.jpg"},
     {songName:"Battle Symphony-Linkin Park",filePath:"songs/6.mp3",coverPath:"covers/6.jpg"},
     {songName:"Take me Home,Country Road-John Denver",filePath:"songs/7.mp3",coverPath:"covers/7.jpg"},
-    {songName:"Carnival Rust-Pink Floyd",filePath:"songs/8.mp3",coverPath:"covers/8.jpg"},
-    {songName:"Starboy-The Weekend",filePath:"songs/9.mp3",coverPath:"covers/9.jpg"},
-   
-
+    {songName:"Carnival Rust-Pink Floyd",filePath:"songs/8.mp3",coverPath:"covers/8.jpg"},    {songName:"Starboy-The Weekend",filePath:"songs/9.mp3",coverPath:"covers/9.jpg"},
 ]
 
 //Adding the Song Icon and Name in each SongItem Div
 songitems.forEach((element,i)=>{
     element.getElementsByTagName('img')[0].src=songs[i].coverPath;
-    element.getElementsByClassName('songname')[0].innerText=songs[i].songName;
-    
+    element.getElementsByClassName('songname')[0].innerText=songs[i].songName;   
 })
 
 
 //handle play box click
 masterPlay.addEventListener('click',()=>{
+    const currentSongElement = document.getElementById(`${currentSongIndex}`);
+    console.log(currentSongElement)
     if(audioElement.paused || audioElement.currentTime<=0){
         audioElement.play();
         masterPlay.classList.remove('fa-play-circle');
         masterPlay.classList.add('fa-pause-circle');
         gif.style.opacity=1;
-    
-
+        currentSongElement.classList.remove('fa-play-circle');
+        currentSongElement.classList.add('fa-pause-circle')
     }
     else{
         audioElement.pause();
         masterPlay.classList.remove('fa-pause-circle');
         masterPlay.classList.add('fa-play-circle');
+        currentSongElement.classList.remove('fa-pause-circle');
+        currentSongElement.classList.add('fa-play-circle')
         gif.style.opacity=0;
-
     }
 })
 
@@ -56,8 +55,10 @@ audioElement.addEventListener('timeupdate',()=>{
     progress=parseInt((audioElement.currentTime/audioElement.duration)*100);
     myProgressBar.value=progress;
 })
+
 //Updating the Seek Bar(When Song is Skipped)
-myProgressBar.addEventListener('change',()=>{
+myProgressBar.addEventListener('input',(e)=>{
+    console.log(e)
     audioElement.currentTime=((myProgressBar.value*audioElement.duration)/100);
 })
 
@@ -75,8 +76,8 @@ const makeAllPlays=()=>{
 
 //Playing Songs from the list function
 const playNewAudio = () => {
-    masterSongName.innerText=songs[songIndex].songName;//Default Song name after page reload
-    audioElement.src=`songs/${songIndex}.mp3`;
+    masterSongName.innerText=songs[songIndex].songName;
+    audioElement.src=`songs/${songIndex+1}.mp3`;
     currentSongIndex = songIndex;
     audioElement.play();
     gif.style.opacity=1;
@@ -86,28 +87,13 @@ const playNewAudio = () => {
 
 const pauseNewAudio = () => {
     masterSongName.innerText=songs[songIndex].songName;//Default Song name after page reload
-    audioElement.src=`songs/${songIndex}.mp3`;
+    audioElement.src=`songs/${songIndex+1}.mp3`;
     currentSongIndex = songIndex;
     audioElement.pause();
     gif.style.opacity=0;
     masterPlay.classList.remove('fa-pause-circle');
     masterPlay.classList.add('fa-play-circle');
 }
-Array.from(document.getElementsByClassName('songItemPlay')).forEach((element)=>{
-    element.addEventListener('click',(e)=>{
-        if(audioElement.paused || audioElement.currentTime<=0){//Paused or Never played in current Session
-            e.target.classList.remove('fa-play-circle');
-            e.target.classList.add('fa-pause-circle');
-        }
-        else if(audioElement.paused && audioElement.currentTime>0){
-            audioElement.src=`songs/${songIndex}.mp3`;
-            audioElement.play()
-
-
-        }
-    
-
-
 
 
 
@@ -116,12 +102,16 @@ Array.from(document.getElementsByClassName('songItemPlay')).forEach((element)=>{
         if(audioElement.paused || audioElement.currentTime<=0){
             e.target.classList.remove('fa-play-circle');
             e.target.classList.add('fa-pause-circle');
-            if (audioElement.paused && audioElement.currentTime > 0) {
+            if (audioElement.paused && (audioElement.currentTime > 0) && (currentSongIndex === parseInt(e.target.id))) {
                 audioElement.play()
+                masterPlay.classList.remove('fa-play-circle');
+                masterPlay.classList.add('fa-pause-circle');
             } else {
                 makeAllPlays()
                 songIndex=parseInt(e.target.id);
                 playNewAudio()
+                e.target.classList.remove('fa-play-circle');
+                e.target.classList.add('fa-pause-circle');
             }
         } else if (!audioElement.paused && !(currentSongIndex === parseInt(e.target.id))) {
             audioElement.pause();
